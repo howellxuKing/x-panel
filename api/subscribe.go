@@ -49,13 +49,13 @@ func Subscribe(c *gin.Context) {
 	pass := string(tokenDecode)
 
 	//if strings.HasPrefix(userAgent, constant.ClashforWindows) {
-	account, userInfo, clashConfigYaml, systemConfig, err := service.SubscribeClash(pass)
+	account, userInfo, clashConfigYaml, _, err := service.SubscribeClash(pass)
 	if err != nil {
 		vo.Fail(err.Error(), c)
 		return
 	}
 	result := fmt.Sprintf(`%s
-%s`, string(clashConfigYaml), systemConfig.ClashRule)
+%s`, string(clashConfigYaml), constant.ClashRules)
 
 	c.Header("content-disposition", fmt.Sprintf("attachment; filename=%s.yaml", *account.Username))
 	c.Header("profile-update-interval", "12")
