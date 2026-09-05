@@ -39,16 +39,16 @@ const ClashRules = `rules:
   - DOMAIN-SUFFIX,epgames.com,DIRECT
   - GEOIP,CN,DIRECT
   # 4. 国外服务强制走代理
-  - DOMAIN-KEYWORD,openai,Proxy
-  - DOMAIN-KEYWORD,chatgpt,Proxy
-  - DOMAIN-KEYWORD,anthropic,Proxy
-  - DOMAIN-KEYWORD,claude,Proxy
-  - DOMAIN-KEYWORD,google,Proxy
-  - DOMAIN-KEYWORD,github,Proxy
-  - DOMAIN-KEYWORD,youtube,Proxy
-  - DOMAIN-KEYWORD,telegram,Proxy
-  - DOMAIN-SUFFIX,twitter.com,Proxy
-  - DOMAIN-SUFFIX,x.com,Proxy
+  - DOMAIN-KEYWORD,openai,PROXY
+  - DOMAIN-KEYWORD,chatgpt,PROXY
+  - DOMAIN-KEYWORD,anthropic,PROXY
+  - DOMAIN-KEYWORD,claude,PROXY
+  - DOMAIN-KEYWORD,google,PROXY
+  - DOMAIN-KEYWORD,github,PROXY
+  - DOMAIN-KEYWORD,youtube,PROXY
+  - DOMAIN-KEYWORD,telegram,PROXY
+  - DOMAIN-SUFFIX,twitter.com,PROXY
+  - DOMAIN-SUFFIX,x.com,PROXY
   # 5. 兜底：其余流量走代理
   - MATCH,PROXY
 `
