@@ -14,7 +14,7 @@ X Panel 是一个基于 [Trojan Panel](https://github.com/trojanpanel) 深度定
 |---|---|---|
 | 后端（本仓库） | `howellxuKing/x-panel` | `ghcr.io/howellxuking/x-panel` |
 | 前端 UI | `howellxuKing/x-panel-ui` | `ghcr.io/howellxuking/x-panel-ui` |
-| 一键安装脚本 | `howellxuKing/install-script` | — |
+| 一键安装脚本 | `howellxuKing/xfly` | — |
 | 内核 | Trojan Panel Core（未改动） | `jonssonyan/trojan-panel-core` |
 
 ## 与上游的主要差异
@@ -27,7 +27,7 @@ X Panel 是一个基于 [Trojan Panel](https://github.com/trojanpanel) 深度定
 ## 一键安装
 
 ```bash
-source <(curl -L https://raw.githubusercontent.com/howellxuKing/install-script/main/install_script.sh)
+source <(curl -L https://raw.githubusercontent.com/howellxuKing/xfly/main/install_script.sh)
 ```
 
 菜单说明：
