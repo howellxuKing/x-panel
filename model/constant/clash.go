@@ -37,6 +37,7 @@ const ClashRules = `rules:
   - DOMAIN-KEYWORD,steamcontent,DIRECT
   - DOMAIN-SUFFIX,cm.steampowered.com,DIRECT
   - DOMAIN-SUFFIX,epgames.com,DIRECT
+  - DOMAIN-SUFFIX,0996zp.com,DIRECT
   - GEOIP,CN,DIRECT
   # 4. 国外服务强制走代理
   - DOMAIN-KEYWORD,openai,PROXY

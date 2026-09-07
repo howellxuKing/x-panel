@@ -3,6 +3,9 @@ package api
 import (
 	"encoding/base64"
 	"fmt"
+	"os"
+	"strings"
+
 	"github.com/gin-gonic/gin"
 	"trojan-panel/model/constant"
 	"trojan-panel/model/dto"
@@ -55,7 +58,7 @@ func Subscribe(c *gin.Context) {
 		return
 	}
 	result := fmt.Sprintf(`%s
-%s`, string(clashConfigYaml), constant.ClashRules)
+%s`, string(clashConfigYaml), getClashRules())
 
 	c.Header("content-disposition", fmt.Sprintf("attachment; filename=%s.yaml", *account.Username))
 	c.Header("profile-update-interval", "12")
@@ -64,4 +67,22 @@ func Subscribe(c *gin.Context) {
 	return
 	//}
 	//vo.Fail("This client is not supported", c)
+}
+
+// getClashRules 返回订阅规则
+// 优先读取面板可编辑的规则模板文件（config/template/template-clash-rule.yaml，系统设置→Clash规则 保存后即写入）；
+// 文件缺失/为空/为旧版 jsDelivr rule-provider 内容/为旧两行默认时，回退内置规则 constant.ClashRules
+func getClashRules() string {
+	content, err := os.ReadFile(constant.ClashRuleFilePath)
+	if err != nil {
+		return constant.ClashRules
+	}
+	rules := strings.TrimSpace(string(content))
+	if rules == "" ||
+		strings.Contains(rules, "rule-provider") ||
+		strings.Contains(rules, "jsdelivr") ||
+		rules == "rules:\n  - GEOIP,CN,DIRECT\n  - MATCH,PROXY" {
+		return constant.ClashRules
+	}
+	return rules
 }
