@@ -70,11 +70,30 @@ func Subscribe(c *gin.Context) {
 	//vo.Fail("This client is not supported", c)
 }
 
-// getClashRules 返回订阅规则
+// getClashRules 返回订阅规则 = 面板配置的自定义直连/代理网站规则（置顶，优先级最高）+ 基础规则
+func getClashRules() string {
+	base := getBaseClashRules()
+	if custom := getCustomClashRules(); custom != "" {
+		return custom + "\n" + base
+	}
+	return base
+}
+
+// getCustomClashRules 面板「模板设置」中自定义的直连/代理网站生成的规则
+// 由面板保存时生成：config/template/clash-custom-rule.yaml；文件不存在或为空表示未配置自定义网站
+func getCustomClashRules() string {
+	content, err := os.ReadFile(constant.ClashCustomRuleFilePath)
+	if err != nil {
+		return ""
+	}
+	return strings.TrimSpace(string(content))
+}
+
+// getBaseClashRules 返回基础订阅规则
 // 优先读取面板可编辑的规则模板文件（config/template/template-clash-rule.yaml，系统设置→Clash规则 保存后即写入）；
 // 文件缺失、为空、为旧版默认内容或依赖 jsDelivr 时，回退到当前内置规则。
 // 管理员修改过的模板保持不变。
-func getClashRules() string {
+func getBaseClashRules() string {
 	content, err := os.ReadFile(constant.ClashRuleFilePath)
 	if err != nil {
 		return constant.ClashRules

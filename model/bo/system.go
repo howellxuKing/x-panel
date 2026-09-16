@@ -21,4 +21,8 @@ type SystemEmailConfigBo struct {
 
 type SystemTemplateConfigBo struct {
 	SystemName string `json:"systemName" redis:"systemName"`
+	// ClashDirectDomains 订阅自定义直连网站（一行一个域名）
+	ClashDirectDomains string `json:"clashDirectDomains"`
+	// ClashProxyDomains 订阅自定义代理网站（一行一个域名）
+	ClashProxyDomains string `json:"clashProxyDomains"`
 }

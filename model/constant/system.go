@@ -22,6 +22,8 @@ const (
 	RbacModelFilePath string = "config/rbac_model.conf"
 	// ClashRuleFilePath Clash规则默认模板
 	ClashRuleFilePath string = "config/template/template-clash-rule.yaml"
+	// ClashCustomRuleFilePath Clash自定义规则（面板配置的直连/代理网站生成）
+	ClashCustomRuleFilePath string = "config/template/clash-custom-rule.yaml"
 	// XrayTemplateFilePath Xray模板
 	XrayTemplateFilePath string = "config/template/template-xray.json"
 

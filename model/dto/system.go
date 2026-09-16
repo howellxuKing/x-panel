@@ -20,4 +20,7 @@ type SystemUpdateDto struct {
 	SystemName   *string `json:"systemName" form:"systemName" validate:"omitempty,min=0,max=32"`
 	ClashRule    *string `json:"clashRule" form:"clashRule" validate:"omitempty,min=0,max=102400"`
 	XrayTemplate *string `json:"xrayTemplate" form:"xrayTemplate" validate:"omitempty,min=0,max=10240"`
+	// 订阅自定义直连/代理网站（多行文本，一行一个域名）
+	ClashDirectDomains *string `json:"clashDirectDomains" form:"clashDirectDomains" validate:"omitempty,min=0,max=10240"`
+	ClashProxyDomains  *string `json:"clashProxyDomains" form:"clashProxyDomains" validate:"omitempty,min=0,max=10240"`
 }

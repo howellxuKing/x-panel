@@ -7,6 +7,7 @@ import (
 	redisgo "github.com/gomodule/redigo/redis"
 	"github.com/sirupsen/logrus"
 	"os"
+	"strings"
 	"time"
 	"trojan-panel/dao"
 	"trojan-panel/dao/redis"
@@ -81,6 +82,8 @@ func SelectSystemByName(name *string) (vo.SystemVo, error) {
 			SystemName:                  systemTemplateConfigBo.SystemName,
 			ClashRule:                   string(clashRuleContent),
 			XrayTemplate:                string(xrayTemplateContent),
+			ClashDirectDomains:          systemTemplateConfigBo.ClashDirectDomains,
+			ClashProxyDomains:           systemTemplateConfigBo.ClashProxyDomains,
 		}
 
 		systemVoJson, err := json.Marshal(systemVo)
@@ -149,8 +152,26 @@ func UpdateSystemById(systemDto dto.SystemUpdateDto) error {
 	systemEmailConfigBoStr := string(systemEmailConfigBoByte)
 
 	systemTemplateConfigBo := bo.SystemTemplateConfigBo{}
+	// 先读取现有模板配置，避免本次未提交的字段被清空
+	systemName := constant.SystemName
+	if system, dbErr := dao.SelectSystemByName(&systemName); dbErr == nil && system.TemplateConfig != nil {
+		if err = json.Unmarshal([]byte(*system.TemplateConfig), &systemTemplateConfigBo); err != nil {
+			logrus.Errorln(fmt.Sprintf("UpdateSystemById SystemTemplateConfigBo deserialization err: %v", err))
+		}
+	}
 	if systemDto.SystemName != nil {
 		systemTemplateConfigBo.SystemName = *systemDto.SystemName
+	}
+	// 订阅自定义直连/代理网站（一行一个域名，留空表示不添加）
+	if systemDto.ClashDirectDomains != nil {
+		systemTemplateConfigBo.ClashDirectDomains = *systemDto.ClashDirectDomains
+	}
+	if systemDto.ClashProxyDomains != nil {
+		systemTemplateConfigBo.ClashProxyDomains = *systemDto.ClashProxyDomains
+	}
+	// 根据自定义名单重新生成订阅规则文件（插入在内置规则之前）
+	if err = writeClashCustomRuleFile(systemTemplateConfigBo.ClashProxyDomains, systemTemplateConfigBo.ClashDirectDomains); err != nil {
+		logrus.Errorln(fmt.Sprintf("UpdateSystemById write clash custom rule file err: %v", err))
 	}
 	if systemDto.ClashRule != nil {
 		// 修改Clash规则默认模板文件
@@ -193,4 +214,51 @@ func UpdateSystemById(systemDto dto.SystemUpdateDto) error {
 	}
 	_ = redis.Client.Key.RetryDel("trojan-panel:system")
 	return nil
+}
+
+// writeClashCustomRuleFile 根据面板配置的自定义代理/直连网站生成订阅自定义规则文件
+// 顺序：先代理、后直连（代理优先，避免把需要代理的站点误判为直连）；订阅时插入到内置规则之前
+func writeClashCustomRuleFile(proxyDomains string, directDomains string) error {
+	var lines []string
+	appendRules := func(text string, policy string) {
+		for _, raw := range strings.FieldsFunc(text, func(r rune) bool {
+			return r == 10 || r == 13 || r == ',' || r == ';' || r == 9
+		}) {
+			if domain := normalizeClashDomain(raw); domain != "" {
+				lines = append(lines, fmt.Sprintf("  - DOMAIN-SUFFIX,%s,%s", domain, policy))
+			}
+		}
+	}
+	appendRules(proxyDomains, "PROXY")
+	appendRules(directDomains, "DIRECT")
+
+	content := ""
+	if len(lines) > 0 {
+		content = strings.Join(lines, "\n") + "\n"
+	}
+	return os.WriteFile(constant.ClashCustomRuleFilePath, []byte(content), 0666)
+}
+
+// normalizeClashDomain 清洗用户输入的网站/域名（去协议、路径、端口、通配符、www.）
+func normalizeClashDomain(raw string) string {
+	s := strings.TrimSpace(strings.ToLower(raw))
+	if s == "" || strings.HasPrefix(s, "#") {
+		return ""
+	}
+	for _, prefix := range []string{"http://", "https://", "socks5://", "socks://"} {
+		s = strings.TrimPrefix(s, prefix)
+	}
+	if i := strings.IndexAny(s, "/?#"); i >= 0 {
+		s = s[:i]
+	}
+	if i := strings.Index(s, ":"); i >= 0 {
+		s = s[:i]
+	}
+	s = strings.TrimPrefix(s, "*.")
+	s = strings.TrimPrefix(s, ".")
+	s = strings.TrimPrefix(s, "www.")
+	if !strings.Contains(s, ".") || strings.Contains(s, " ") {
+		return ""
+	}
+	return s
 }

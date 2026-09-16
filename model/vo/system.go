@@ -20,6 +20,9 @@ type SystemVo struct {
 	SystemName   string `json:"systemName" redis:"systemName"`
 	ClashRule    string `json:"clashRule" redis:"clashRule"`
 	XrayTemplate string `json:"xrayTemplate" redis:"xrayTemplate"`
+	// 订阅自定义直连/代理网站（一行一个域名，留空则仅用上方完整规则）
+	ClashDirectDomains string `json:"clashDirectDomains" redis:"clashDirectDomains"`
+	ClashProxyDomains  string `json:"clashProxyDomains" redis:"clashProxyDomains"`
 }
 
 type SettingVo struct {
