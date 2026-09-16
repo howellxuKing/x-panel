@@ -1,6 +1,7 @@
 package api
 
 import (
+	"crypto/sha256"
 	"encoding/base64"
 	"fmt"
 	"os"
@@ -71,16 +72,20 @@ func Subscribe(c *gin.Context) {
 
 // getClashRules 返回订阅规则
 // 优先读取面板可编辑的规则模板文件（config/template/template-clash-rule.yaml，系统设置→Clash规则 保存后即写入）；
-// 文件缺失/为空/为旧版 jsDelivr rule-provider 内容/为旧两行默认时，回退内置规则 constant.ClashRules
+// 文件缺失、为空、为旧版默认内容或依赖 jsDelivr 时，回退到当前内置规则。
+// 管理员修改过的模板保持不变。
 func getClashRules() string {
 	content, err := os.ReadFile(constant.ClashRuleFilePath)
 	if err != nil {
 		return constant.ClashRules
 	}
 	rules := strings.TrimSpace(string(content))
+	normalizedRules := strings.ReplaceAll(rules, "\r\n", "\n")
+	rulesDigest := fmt.Sprintf("%x", sha256.Sum256([]byte(normalizedRules)))
 	if rules == "" ||
 		strings.Contains(rules, "rule-provider") ||
 		strings.Contains(rules, "jsdelivr") ||
+		rulesDigest == constant.ClashRulesV233SHA256 ||
 		rules == "rules:\n  - GEOIP,CN,DIRECT\n  - MATCH,PROXY" {
 		return constant.ClashRules
 	}
