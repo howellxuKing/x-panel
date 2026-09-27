@@ -46,6 +46,18 @@ func InitMySQL() {
 			panic(err)
 		}
 	}
+
+	// 品牌更名迁移：把旧默认系统名称换为 XWarp（仅替换旧默认值，不影响管理员自定义的名称）
+	if err = MigrateSystemName(); err != nil {
+		logrus.Warnf("system name migrate err: %v", err)
+	}
+}
+
+// MigrateSystemName 将历史默认系统名称（X Panel / Trojan Panel）迁移为 XWarp
+func MigrateSystemName() error {
+	const sqlStr = `UPDATE system SET config = REPLACE(REPLACE(config, '"systemName":"X Panel"', '"systemName":"XWarp"'), '"systemName":"Trojan Panel"', '"systemName":"XWarp"') WHERE config LIKE '%"systemName":"X Panel"%' OR config LIKE '%"systemName":"Trojan Panel"%'`
+	_, err := db.Exec(sqlStr)
+	return err
 }
 
 func CloseDb() {
