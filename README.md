@@ -1,5 +1,5 @@
 <div align="center">
-<img src="https://raw.githubusercontent.com/howellxuKing/x-panel-ui/main/public/logo.png" width="120" alt="XWarp" />
+<img src="https://raw.githubusercontent.com/howellxuKing/xwarp-ui/main/public/logo.png" width="120" alt="XWarp" />
 <h1>XWarp</h1>
 <p>多用户代理管理面板 —— 一键安装 · 订阅即用 · 自带黑白双主题</p>
 </div>
@@ -14,9 +14,9 @@ XWarp 是一个基于 [Trojan Panel](https://github.com/trojanpanel) 深度定�
 
 | 组件 | 仓库 | 镜像 |
 |---|---|---|
-| 后端（本仓库） | `howellxuKing/x-panel` | `ghcr.io/howellxuking/x-panel` |
-| 前端 UI | `howellxuKing/x-panel-ui` | `ghcr.io/howellxuking/x-panel-ui` |
-| 一键安装脚本 | `howellxuKing/xfly` | — |
+| 后端（本仓库） | `howellxuKing/xwarp` | `ghcr.io/howellxuking/xwarp` |
+| 前端 UI | `howellxuKing/xwarp-ui` | `ghcr.io/howellxuking/xwarp-ui` |
+| 一键安装脚本 | `howellxuKing/xwarp-install` | — |
 | 内核 | Trojan Panel Core（未改动） | `jonssonyan/trojan-panel-core` |
 
 ## 与上游的主要差异
@@ -29,7 +29,7 @@ XWarp 是一个基于 [Trojan Panel](https://github.com/trojanpanel) 深度定�
 ## 一键安装
 
 ```bash
-source <(curl -L https://raw.githubusercontent.com/howellxuKing/xfly/main/install_script.sh)
+source <(curl -L https://raw.githubusercontent.com/howellxuKing/xwarp-install/main/install_script.sh)
 ```
 
 菜单说明：
@@ -57,7 +57,7 @@ source <(curl -L https://raw.githubusercontent.com/howellxuKing/xfly/main/instal
 go build   # 或参考 compile.bat（Windows 交叉编译）
 ```
 
-前端见 [x-panel-ui](https://github.com/howellxuKing/x-panel-ui)（`npm run build`，vue-cli 4 + Node 22 需 `NODE_OPTIONS=--openssl-legacy-provider`）。
+前端见 [xwarp-ui](https://github.com/howellxuKing/xwarp-ui)（`npm run build`，vue-cli 4 + Node 22 需 `NODE_OPTIONS=--openssl-legacy-provider`）。
 
 ## 致谢
 

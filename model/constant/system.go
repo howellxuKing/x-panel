@@ -15,7 +15,7 @@ const (
 	TemplatePath string = "config/template"
 	// LogoImagePath 系统logo文件路径
 	LogoImagePath string = "config/template/logo.png"
-	LogoImageUrl  string = "https://raw.githubusercontent.com/howellxuKing/x-panel-ui/main/public/logo.png"
+	LogoImageUrl  string = "https://raw.githubusercontent.com/howellxuKing/xwarp-ui/main/public/logo.png"
 	// ConfigFilePath 配置文件路径
 	ConfigFilePath string = "config/config.ini"
 	// RbacModelFilePath rbac配置文件路径
@@ -35,5 +35,5 @@ const (
 	TrojanPanelCrtFile      string = "trojan-panel.crt"
 	TrojanPanelKeyFile      string = "trojan-panel.key"
 
-	TrojanPanelVersion = "v2.4.0"
+	TrojanPanelVersion = "v2.4.1"
 )
