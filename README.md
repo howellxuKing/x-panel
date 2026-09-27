@@ -1,16 +1,16 @@
 <div align="center">
-<img src="https://raw.githubusercontent.com/howellxuKing/x-panel-ui/main/public/logo.png" width="120" alt="X Panel" />
-<h1>X Panel</h1>
-<p>多用户代理管理面板（Trojan Panel 定制版）——一键安装 · 订阅即用 · 去品牌重做</p>
+<img src="https://raw.githubusercontent.com/howellxuKing/x-panel-ui/main/public/logo.png" width="120" alt="XWarp" />
+<h1>XWarp</h1>
+<p>多用户代理管理面板 —— 一键安装 · 订阅即用 · 自带黑白双主题</p>
 </div>
 
 ## 简介
 
-X Panel 是一个基于 [Trojan Panel](https://github.com/trojanpanel) 深度定制的多用户代理管理面板，支持 Xray（VLESS / VLESS+Reality / VMess / Trojan / Shadowsocks）、Trojan-Go、Hysteria、Hysteria2、NaiveProxy，自带用户管理、流量统计、到期管理、一键伪装站。
+XWarp 是一个基于 [Trojan Panel](https://github.com/trojanpanel) 深度定制的多用户代理管理面板，支持 Xray（VLESS / VLESS+Reality / VMess / Trojan / Shadowsocks）、Trojan-Go、Hysteria、Hysteria2、NaiveProxy，自带用户管理、流量统计、到期管理、一键伪装站。
 
-当前后端版本：**v2.3.4**。
+当前后端版本：**v2.4.0**。
 
-**本仓库为 X Panel 后端**（Go 编写的 API + 订阅服务），配套仓库：
+**本仓库为 XWarp 后端**（Go 编写的 API + 订阅服务），配套仓库：
 
 | 组件 | 仓库 | 镜像 |
 |---|---|---|
@@ -23,7 +23,7 @@ X Panel 是一个基于 [Trojan Panel](https://github.com/trojanpanel) 深度定
 
 1. **订阅干净化**：去掉 cdn.jsdelivr.net 的 rule-providers，订阅规则自包含 → **Clash Verge 秒导入**，不再卡下载
 2. **内置分流规则**：国外 AI/开发服务优先代理（PROXY）+ 国内电商/社交直连（DIRECT）+ 中国大陆 IP 直连 + 未识别流量代理兜底；规则可在面板编辑
-3. **去品牌重做**：更名 X Panel（浏览器标题/种子数据/logo），移除「项目地址/项目文档」入口
+3. **去品牌重做**：更名 XWarp（浏览器标题/种子数据/logo），移除「项目地址/项目文档」入口
 4. **镜像走 GHCR**：前端/后端镜像由 GitHub Actions 自动构建推送，可匿名拉取
 
 ## 一键安装
